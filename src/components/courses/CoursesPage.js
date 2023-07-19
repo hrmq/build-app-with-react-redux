@@ -21,7 +21,7 @@ class CoursesPage extends React.Component {
 
     handleSubmit = (event) => {
         event.preventDefault()
-        this.props.createCourse(this.state.course)
+        this.props.actions.createCourse(this.state.course)
     }
 
     render() {
@@ -55,8 +55,10 @@ function mapStateToProps(state) {
     }
 }
 
-const mapDispatchToProps = {
-    createCourse: courseActions.createCourse
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(courseActions, dispatch)
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CoursesPage)
