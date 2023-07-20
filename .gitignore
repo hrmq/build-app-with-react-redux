@@ -10,6 +10,8 @@
 
 # production
 /build
+tools/db.json
+/.vscode
 
 # misc
 .DS_Store
