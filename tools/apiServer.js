@@ -54,10 +54,6 @@ server.post("/courses/", function(req, res, next) {
   }
 });
 
-server.get('/authors/', function(req, res, next) {
-    res.status(200).send('ok')
-})
-
 // Use default router
 server.use(router);
 
