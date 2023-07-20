@@ -5,6 +5,7 @@ import AboutPage from './components/about/AboutPage';
 import CoursesPage from './components/courses/CoursesPage';
 import Header from './components/common/Header';
 import PageNotFound from './components/PageNotFound';
+import ManageCoursePage from './components/courses/ManageCoursePage';
 
 import './App.css';
 
@@ -17,6 +18,8 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path='about' element={<AboutPage/>} />
           <Route path='courses' element={<CoursesPage/>} />
+          <Route path='course/:slug' element={<ManageCoursePage/>} />
+          <Route path='course' element={<ManageCoursePage/>} />
           <Route path='*' element={<PageNotFound/>} />
         </Route>
       </Routes>
