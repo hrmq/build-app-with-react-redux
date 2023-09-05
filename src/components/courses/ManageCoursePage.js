@@ -1,10 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { loadCourses } from '../../redux/actions/courseActions'
 import { loadAuthors } from '../../redux/actions/authorActions'
 import PropTypes from 'prop-types'
+import CourseForm from "./CourseForm";
 
-function ManageCoursePage({ loadAuthors, loadCourses, authors, courses })  {
+function ManageCoursePage({ loadAuthors, loadCourses, authors, courses, ...props })  {
+    const [course, setCourse] = useState({...props.course})
+    const [errors, setErrors] = useState({})
+
     useEffect(() => {
         if (courses.length === 0) {
             loadCourses().catch(error => console.log('Loading courses error' + error))
@@ -15,14 +19,11 @@ function ManageCoursePage({ loadAuthors, loadCourses, authors, courses })  {
         }
     }, [])
 
-    return (
-        <>
-            <h2>Manage Courses</h2>
-        </>
-    )
+    return <CourseForm course={course} errors={errors} authors={authors} />
 }
 
 ManageCoursePage.propTypes = {
+    course: PropTypes.object.isRequired,
     courses: PropTypes.array.isRequired,
     actions: PropTypes.object.isRequired
 }
