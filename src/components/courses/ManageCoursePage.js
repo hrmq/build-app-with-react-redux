@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { loadCourses } from '../../redux/actions/courseActions'
+import { loadCourses, saveCourse } from '../../redux/actions/courseActions'
 import { loadAuthors } from '../../redux/actions/authorActions'
 import PropTypes from 'prop-types'
-import CourseForm from "./CourseForm";
+import CourseForm from "./CourseForm"
+import { useNavigate } from 'react-router-dom'
 
-function ManageCoursePage({ loadAuthors, loadCourses, authors, courses, ...props })  {
+function ManageCoursePage({ loadAuthors, loadCourses, saveCourse, authors, courses, history, ...props })  {
     const [course, setCourse] = useState({...props.course})
     const [errors, setErrors] = useState({})
+    const navigate = useNavigate()
 
     useEffect(() => {
         if (courses.length === 0) {
@@ -22,17 +24,27 @@ function ManageCoursePage({ loadAuthors, loadCourses, authors, courses, ...props
     function handleChange(event) {
         const { name, value } = event.target
         setCourse( prevCourse => ({
+            ...prevCourse,
             [name]: name === 'authorId' ? parseInt(value, 10) : value
         }))
     }
 
-    return <CourseForm course={course} errors={errors} authors={authors} onChange={handleChange}/>
+    function handleSave(event) {
+        event.preventDefault()
+        saveCourse(course).then(() => {
+            navigate('../courses')
+        })
+    }
+
+    return <CourseForm course={course} errors={errors} authors={authors} onChange={handleChange} onSave={handleSave}/>
 }
 
 ManageCoursePage.propTypes = {
     course: PropTypes.object.isRequired,
     courses: PropTypes.array.isRequired,
-    actions: PropTypes.object.isRequired
+    actions: PropTypes.object.isRequired,
+    saveCourse: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired
 }
 
 function mapStateToProps(state) {
@@ -44,7 +56,8 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = {
     loadCourses,
-    loadAuthors
+    loadAuthors,
+    saveCourse
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManageCoursePage)
