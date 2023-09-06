@@ -6,6 +6,13 @@ import PropTypes from 'prop-types'
 import CourseForm from "./CourseForm"
 import { useNavigate } from 'react-router-dom'
 
+const newCourse = {
+    id: null,
+    title: "",
+    authorId: null,
+    category: ""
+}
+
 function ManageCoursePage({ loadAuthors, loadCourses, saveCourse, authors, courses, history, ...props })  {
     const [course, setCourse] = useState({...props.course})
     const [errors, setErrors] = useState({})
@@ -14,6 +21,8 @@ function ManageCoursePage({ loadAuthors, loadCourses, saveCourse, authors, cours
     useEffect(() => {
         if (courses.length === 0) {
             loadCourses().catch(error => console.log('Loading courses error' + error))
+        } else {
+            setCourse({ ...props.course })
         }
 
         if (authors.length === 0) {
@@ -47,8 +56,16 @@ ManageCoursePage.propTypes = {
     history: PropTypes.object.isRequired
 }
 
+export function getCourseBySlug(courses, slug) {
+    return courses.find(course => course.slug === slug) || null
+}
+
 function mapStateToProps(state) {
+    // const slug = ownProps.match.params.slug
+    const slug = null
+    const course = slug && state.courses.length > 0 ? getCourseBySlug(state.course, slug) : newCourse
     return {
+        course,
         courses: state.courses,
         authors: state.authors
     }
