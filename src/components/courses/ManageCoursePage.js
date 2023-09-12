@@ -5,7 +5,8 @@ import { loadAuthors } from '../../redux/actions/authorActions'
 import PropTypes from 'prop-types'
 import CourseForm from "./CourseForm"
 import { useNavigate } from 'react-router-dom'
-import Spinner from "../common/Spinner";
+import Spinner from "../common/Spinner"
+import { toast } from "react-toastify";
 
 const newCourse = {
     id: null,
@@ -17,6 +18,7 @@ const newCourse = {
 function ManageCoursePage({ loadAuthors, loadCourses, saveCourse, authors, courses, history, ...props })  {
     const [course, setCourse] = useState({...props.course})
     const [errors, setErrors] = useState({})
+    const [saving, setSaving] = useState(false)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -41,13 +43,17 @@ function ManageCoursePage({ loadAuthors, loadCourses, saveCourse, authors, cours
 
     function handleSave(event) {
         event.preventDefault()
+        setSaving(true)
         saveCourse(course).then(() => {
+            toast.success('Course Saved.')
             navigate('../courses')
         })
     }
 
     return (
-        authors.length === 0 || course.length === 0 ? (<Spinner/>) : <CourseForm course={course} errors={errors} authors={authors} onChange={handleChange} onSave={handleSave}/>
+        authors.length === 0 || course.length === 0 
+        ? (<Spinner/>) 
+        : <CourseForm course={course} errors={errors} authors={authors} onChange={handleChange} onSave={handleSave} saving={saving}/>
     )
 }
 
