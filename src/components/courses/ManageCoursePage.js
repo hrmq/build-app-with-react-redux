@@ -5,6 +5,7 @@ import { loadAuthors } from '../../redux/actions/authorActions'
 import PropTypes from 'prop-types'
 import CourseForm from "./CourseForm"
 import { useNavigate } from 'react-router-dom'
+import Spinner from "../common/Spinner";
 
 const newCourse = {
     id: null,
@@ -45,7 +46,9 @@ function ManageCoursePage({ loadAuthors, loadCourses, saveCourse, authors, cours
         })
     }
 
-    return <CourseForm course={course} errors={errors} authors={authors} onChange={handleChange} onSave={handleSave}/>
+    return (
+        authors.length === 0 || course.length === 0 ? (<Spinner/>) : <CourseForm course={course} errors={errors} authors={authors} onChange={handleChange} onSave={handleSave}/>
+    )
 }
 
 ManageCoursePage.propTypes = {
