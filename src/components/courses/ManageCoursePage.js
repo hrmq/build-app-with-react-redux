@@ -33,6 +33,19 @@ function ManageCoursePage({ loadAuthors, loadCourses, saveCourse, authors, cours
         }
     }, [])
 
+    function formIsValid() {
+        const { title, authorId, category } = course
+        const errors = {}
+    
+        if (!title) errors.title = "Title is required."
+        if (!authorId) errors.author = "Author is required"
+        if (!category) errors.category = "Category is required"
+    
+        setErrors(errors);
+        // Form is valid if the errors object still has no properties
+        return Object.keys(errors).length === 0
+      }
+
     function handleChange(event) {
         const { name, value } = event.target
         setCourse( prevCourse => ({
@@ -43,6 +56,8 @@ function ManageCoursePage({ loadAuthors, loadCourses, saveCourse, authors, cours
 
     function handleSave(event) {
         event.preventDefault()
+        if (!formIsValid()) return
+        
         setSaving(true)
         saveCourse(course).then(() => {
             toast.success('Course Saved.')
