@@ -15,7 +15,7 @@ const newCourse = {
     category: ""
 }
 
-function ManageCoursePage({ loadAuthors, loadCourses, saveCourse, authors, courses, history, ...props })  {
+export function ManageCoursePage({ loadAuthors, loadCourses, saveCourse, authors, courses, history, ...props })  {
     const [course, setCourse] = useState({...props.course})
     const [errors, setErrors] = useState({})
     const [saving, setSaving] = useState(false)
